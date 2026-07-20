@@ -1,11 +1,16 @@
 from flask import Flask, jsonify
 from calculator import add, subtract, multiply
+import json
 
 app = Flask(__name__)
 
 @app.route('/health')
 def health():
-    return jsonify({'status': 'ok', 'service': 'calculator-api'})
+    response = {'status': 'ok', 'service': 'calculator-api'}
+    with open("logs/my-app.log", "at") as fh:
+        json.dump(response, fh)
+    
+    return jsonify(response)
 
 @app.route('/add/<int:a>/<int:b>')
 def add_route(a, b):
